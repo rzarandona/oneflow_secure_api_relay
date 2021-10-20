@@ -21,6 +21,10 @@ app.use(
 );
 app.use(express.json());
 
+app.get("/", (req, res, next) => {
+  res.send("HELLOWORLD");
+});
+
 app.post("/url", (req, res, next) => {
   let order_id = req.body.order_id;
   let inner_pdf = req.body.inner_pdf;
