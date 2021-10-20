@@ -21,26 +21,40 @@ app.use(
 );
 app.use(express.json());
 
+let method = "POST";
+let path = "/api/order";
+let timestamp = Math.floor(Date.now() / 1000);
+let secret = process.env.ONEFLOW_SECRET;
+let token = process.env.ONEFLOW_TOKEN;
+
+let stringToSign = method + " " + path + " " + timestamp;
+let signature = crypto.HmacSHA1(stringToSign, secret).toString(crypto.enc.Hex);
+let authHeader = token + ":" + signature;
+
 app.get("/", (req, res, next) => {
   res.send("HELLOWORLD");
 });
 
-app.post("/url", (req, res, next) => {
+app.get("/orders", (req, res, next) => {
+  axios
+    .get("https://pro-api.oneflowcloud.com/api/order", {
+      headers: {
+        "x-oneflow-authorization": authHeader,
+        "x-oneflow-date": timestamp,
+      },
+    })
+    .then((api_response) => {
+      console.log(api_response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/submit_order", (req, res, next) => {
   let order_id = req.body.order_id;
   let inner_pdf = req.body.inner_pdf;
   let outer_pdf = req.body.outer_pdf;
-
-  let method = "POST";
-  let path = "/api/order";
-  let timestamp = Math.floor(Date.now() / 1000);
-  let secret = process.env.ONEFLOW_SECRET;
-  let token = process.env.ONEFLOW_TOKEN;
-
-  let stringToSign = method + " " + path + " " + timestamp;
-  let signature = crypto
-    .HmacSHA1(stringToSign, secret)
-    .toString(crypto.enc.Hex);
-  let authHeader = token + ":" + signature;
 
   let data = {
     destination: {
@@ -112,16 +126,15 @@ app.post("/url", (req, res, next) => {
         "x-oneflow-date": timestamp,
       },
     })
-    .then((res) => {
-      if (res.status == 200 || res.status == 201) {
-        console.log("Book has been submitted to OneFlow");
+    .then((api_response) => {
+      console.log(api_response.status);
+      if (api_response.status == 200 || api_response.status == 201) {
+        res.send({ status: "success" });
       }
     })
     .catch((err) => {
-      console.log(err);
-      console.log(
-        "There was an error, or an order with the same id has already been submitted to OneFlow"
-      );
+      console.log(err)
+      res.send({ status: "failed" });
     });
 });
 
