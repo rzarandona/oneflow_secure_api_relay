@@ -14,7 +14,6 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   next();
 });
-
 app.use(
   express.urlencoded({
     extended: true,
@@ -37,19 +36,21 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/orders", (req, res, next) => {
-  axios
-    .get("https://pro-api.oneflowcloud.com/api/order", {
-      headers: {
-        "x-oneflow-authorization": authHeader,
-        "x-oneflow-date": timestamp,
-      },
-    })
-    .then((api_response) => {
-      console.log(api_response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  axios.get("https://pro-api.oneflowcloud.com/api/order", {
+    headers: {
+      "x-oneflow-authorization": authHeader,
+      "accept": "application/json",
+      "x-oneflow-date": timestamp,
+    }
+  })
+  .then(api_response => {
+    res.json(api_response);
+  })
+  .catch(err => {
+    res.json(err);
+  })
+
+
 });
 
 app.post("/submit_order", (req, res, next) => {
