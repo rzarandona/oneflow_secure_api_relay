@@ -1,22 +1,13 @@
 let express = require("express");
 let app = express();
+let cors = require("cors");
 require("dotenv").config();
 
 let crypto = require("crypto-js");
 let axios = require("axios");
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-  );
-  next();
-});
+app.use(cors());
+
 app.use(
   express.urlencoded({
     extended: true,
