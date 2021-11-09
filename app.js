@@ -138,7 +138,7 @@ app.post("/submit_order", (req, res, next) => {
     })
     .catch((err) => {
       // console.log(err);
-      console.log(secret, token);
+      console.log(err);
       res.send({ status: "failed" });
     });
 });
