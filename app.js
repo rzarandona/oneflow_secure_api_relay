@@ -27,8 +27,8 @@ app.use(express.json());
 let method = "POST";
 let path = "/api/order";
 let timestamp = Math.floor(Date.now() / 1000);
-let secret = "a3b2f495e1dc171a45d686747a9478d9cdbe1ed646d25791";
-let token = "1916514645615";
+let secret = process.env.ONEFLOW_SECRET;
+let token = process.env.ONEFLOW_TOKEN;
 
 let stringToSign = method + " " + path + " " + timestamp;
 let signature = crypto.HmacSHA1(stringToSign, secret).toString(crypto.enc.Hex);
@@ -137,7 +137,8 @@ app.post("/submit_order", (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
+      console.log(secret, token);
       res.send({ status: "failed" });
     });
 });
