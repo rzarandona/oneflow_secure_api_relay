@@ -35,7 +35,7 @@ let signature = crypto.HmacSHA1(stringToSign, secret).toString(crypto.enc.Hex);
 let authHeader = token + ":" + signature;
 
 app.get("/", (req, res, next) => {
-  res.send("HELLOWORLD");
+  res.json("HELLO WORLD");
 });
 
 app.get("/orders", (req, res, next) => {
