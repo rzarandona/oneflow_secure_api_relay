@@ -66,13 +66,13 @@ app.post("/submit_order", (req, res, next) => {
     },
     orderData: {
       sourceOrderId: order_id,
-      customerName: "customer_name" /* customer_name */,
+      customerName: "hectorspost" /* customer_name */,
       items: [
         {
           barcode: order_id,
           shipmentIndex: 0,
           sourceItemId: order_id,
-          sku: sku /* sku */ /* hectorspost_hardback_210x210 | hectorspost_softback_210x210 */,
+          sku: "hectorspost_staging" /* sku */ /* hectorspost_hardback_210x210 | hectorspost_softback_210x210 */,
           quantity: 1,
           unitCost: 0.0 /* unit_cost */,
           components: [
@@ -95,12 +95,12 @@ app.post("/submit_order", (req, res, next) => {
         {
           shipmentIndex: 0,
           shipTo: {
-            name: "customer_name" /* customer_name */,
+            name: "Test Tester " /* customer_name */,
             companyName: "",
-            address1: "address_line" /* address_line */,
-            town: "town" /* town */,
-            postcode: "postcode" /* postcode */,
-            isoCountry: "iso_country" /* iso_country */,
+            address1: "Do Not Ship" /* address_line */,
+            town: "DO NOT SHIP" /* town */,
+            postcode: "1ES TE1" /* postcode */,
+            isoCountry: "GB" /* iso_country */,
           },
           shipByDate: "2021-09-09T13:15:25.7654838+01:00",
           canShipEarly: false,
@@ -114,7 +114,7 @@ app.post("/submit_order", (req, res, next) => {
           },
           carrier: {
             alias:
-              "shipping_alias" /* shipping_alias */ /* rmsigned24uk | rmsigned48uk | rmtrackedeu | rmtrackedrow */,
+              "shippingtest" /* shipping_alias */ /* rmsigned24uk | rmsigned48uk | rmtrackedeu | rmtrackedrow */,
           },
           dispatchAlert: "",
         },
