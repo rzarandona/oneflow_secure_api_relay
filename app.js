@@ -123,27 +123,25 @@ app.post("/submit_order", (req, res, next) => {
     },
   };
 
-  res.send(data);
-
-  // axios
-  //   .post("https://pro-api.oneflowcloud.com/api/order", data, {
-  //     headers: {
-  //       "x-oneflow-authorization": authHeader,
-  //       Accept: "application/json",
-  //       "x-oneflow-date": timestamp,
-  //     },
-  //   })
-  //   .then((api_response) => {
-  //     console.log(api_response.status);
-  //     if (api_response.status == 200 || api_response.status == 201) {
-  //       res.send({ status: "success" });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     // console.log(err);
-  //     console.log(err);
-  //     res.send({ status: "failed" });
-  //   });
+  axios
+    .post("https://pro-api.oneflowcloud.com/api/order", data, {
+      headers: {
+        "x-oneflow-authorization": authHeader,
+        Accept: "application/json",
+        "x-oneflow-date": timestamp,
+      },
+    })
+    .then((api_response) => {
+      console.log(api_response.status);
+      if (api_response.status == 200 || api_response.status == 201) {
+        res.send({ status: "success" });
+      }
+    })
+    .catch((err) => {
+      // console.log(err);
+      console.log(err);
+      res.send({ status: "failed" });
+    });
 });
 
 app.listen(3000, () => {
