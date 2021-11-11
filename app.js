@@ -51,21 +51,30 @@ app.post("/submit_order", (req, res, next) => {
   let inner_pdf = req.body.inner_pdf;
   let outer_pdf = req.body.outer_pdf;
 
+  let customer_name = req.body.customer_name; //
+  let town = req.body.town; //
+  let postcode = req.body.postcode; //
+  let iso_country = req.body.iso_country; //
+  let shipping_alias = req.body.shipping_alias; //
+  let sku = req.body.sku;
+  let unit_cost = req.body.unit_cost; //
+  let address_line = req.body.address_line; //
+
   let data = {
     destination: {
       name: "pureprint",
     },
     orderData: {
       sourceOrderId: order_id,
-      customerName: "hectorspost",
+      customerName: customer_name /* customer_name */,
       items: [
         {
           barcode: order_id,
           shipmentIndex: 0,
           sourceItemId: order_id,
-          sku: "hectorspost_staging",
+          sku: sku /* sku */ /* hectorspost_hardback_210x210 | hectorspost_softback_210x210 */,
           quantity: 1,
-          unitCost: 0.0,
+          unitCost: unit_cost /* unit_cost */,
           components: [
             {
               path: inner_pdf,
@@ -86,17 +95,17 @@ app.post("/submit_order", (req, res, next) => {
         {
           shipmentIndex: 0,
           shipTo: {
-            name: "Test Tester ",
-            companyName: "Test Company",
-            address1: "Do Not Ship",
-            town: "DO NOT SHIP",
-            postcode: "1ES TE1",
-            isoCountry: "GB",
+            name: customer_name /* customer_name */,
+            companyName: "",
+            address1: address_line /* address_line */,
+            town: town /* town */,
+            postcode: postcode /* postcode */,
+            isoCountry: iso_country /* iso_country */,
           },
           shipByDate: "2021-09-09T13:15:25.7654838+01:00",
           canShipEarly: false,
           returnAddress: {
-            name: "Test",
+            name: "Hector's Post",
             companyName: "Pureprint Group",
             address1: "Beon House, Bellbrook Park",
             town: "Uckfield",
@@ -104,7 +113,8 @@ app.post("/submit_order", (req, res, next) => {
             isoCountry: "GB",
           },
           carrier: {
-            alias: "shippingtest",
+            alias:
+              shipping_alias /* shipping_alias */ /* rmsigned24uk | rmsigned48uk | rmtrackedeu | rmtrackedrow */,
           },
           dispatchAlert: "",
         },
@@ -113,25 +123,27 @@ app.post("/submit_order", (req, res, next) => {
     },
   };
 
-  axios
-    .post("https://pro-api.oneflowcloud.com/api/order", data, {
-      headers: {
-        "x-oneflow-authorization": authHeader,
-        Accept: "application/json",
-        "x-oneflow-date": timestamp,
-      },
-    })
-    .then((api_response) => {
-      console.log(api_response.status);
-      if (api_response.status == 200 || api_response.status == 201) {
-        res.send({ status: "success" });
-      }
-    })
-    .catch((err) => {
-      // console.log(err);
-      console.log(err);
-      res.send({ status: "failed" });
-    });
+  res.send(data);
+
+  // axios
+  //   .post("https://pro-api.oneflowcloud.com/api/order", data, {
+  //     headers: {
+  //       "x-oneflow-authorization": authHeader,
+  //       Accept: "application/json",
+  //       "x-oneflow-date": timestamp,
+  //     },
+  //   })
+  //   .then((api_response) => {
+  //     console.log(api_response.status);
+  //     if (api_response.status == 200 || api_response.status == 201) {
+  //       res.send({ status: "success" });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     // console.log(err);
+  //     console.log(err);
+  //     res.send({ status: "failed" });
+  //   });
 });
 
 app.listen(3000, () => {
